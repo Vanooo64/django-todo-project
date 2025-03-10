@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Замовлення{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center">Список замовлень</h2>
+
+    <div class="row">
+        <!-- Карточка замовлення -->
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Розробка сайту</h5>
+                    <p class="card-text"><strong>Ціна:</strong> 5000 грн</p>
+                    <p class="card-text"><strong>Статус:</strong> <span class="badge bg-warning">Очікує виконавця</span></p>
+                    <p class="card-text">Потрібно створити адаптивний сайт для бізнесу.</p>
+                    <a href="#" class="btn btn-primary">Деталі</a>
+                    <a href="#" class="btn btn-success">Взяти в роботу</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Інші замовлення -->
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Копірайтинг статей</h5>
+                    <p class="card-text"><strong>Ціна:</strong> 1200 грн</p>
+                    <p class="card-text"><strong>Статус:</strong> <span class="badge bg-success">В роботі</span></p>
+                    <p class="card-text">Написання 5 SEO-статей для блогу.</p>
+                    <a href="#" class="btn btn-primary">Деталі</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Дизайн логотипу</h5>
+                    <p class="card-text"><strong>Ціна:</strong> 2500 грн</p>
+                    <p class="card-text"><strong>Статус:</strong> <span class="badge bg-danger">Закрито</span></p>
+                    <p class="card-text">Розробка унікального логотипу для бренду.</p>
+                    <a href="#" class="btn btn-primary">Деталі</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

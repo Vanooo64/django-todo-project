@@ -4,13 +4,13 @@
   TODO App Index
 {% endblock title %}
 
-{% block body %} 
-  <h1>Welcome to our TODO App!</h1>
-  <h2>Work in progress...</h2>
-  <h3>It is {% now "jS F Y H:i:s" %}</h3>
-  <div>
+  {% block content %}
+    <h1>Welcome to our TODO App!</h1>
+    <h2>Work in progress...</h2>
+    <h3>It is {% now "jS F Y H:i:s" %}</h3>
     <div>
-      abc
+      <div>
+        abc
+      </div>
     </div>
-  </div>
-{% endblock body %} 
+  {% endblock content %}
