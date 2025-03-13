@@ -1,2 +1,24 @@
 {% extends "orders/base.html" %}
 
+{% block title %}
+  Order Index
+{% endblock title %}
+
+  {% block content %}
+    <h1>Список замовлень </h1>
+    <h2>Замовлення</h2>
+    <ul>
+      {% for order in order_lists %}
+        <li>{{ order.title }} 
+          {% if order.status == 0 %}
+            ❌
+          {% elif order.status == 1 %}
+            🦾
+          {% elif order.status == 2 %}
+            ✅
+          {% endif %}
+            </li>
+      {% endfor %}
+    </ul>  
+ 
+  {% endblock content %}
