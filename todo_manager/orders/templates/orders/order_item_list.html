@@ -1,0 +1,10 @@
+{% extends "orders/index.html" %}
+
+{% block title %}
+  Order List
+{% endblock title %}
+
+{% block content %}
+    <h3 class="text-center">Всі замовлення</h3>
+    {% include "orders/components/order_list.html" %}
+{% endblock %}
