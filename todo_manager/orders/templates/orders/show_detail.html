@@ -1,0 +1,50 @@
+{% extends "orders/index.html" %}
+{% load static %}
+
+{% block title %}
+  Order Detail
+{% endblock title %}
+
+{% block content %}
+    <h3 class="text-center">Інформація по замовленню</h3>
+    <div class="order-info">
+    <div class="order-info__back-link">
+    </div>
+
+    <div class="order-info__wrapper">
+        <div class="order-info__header">
+            <div class="order-info__order-type">
+                {{ order.get_type_of_work_display }}, {{ order.subject }}
+            </div>
+            <div class="order-info__order-name">
+                {{ order.title }}
+            </div>
+        </div>
+
+        <div class="order-info__status-wrapper">
+            <div class="order-info__info-section">
+                <div class="order-price">
+                    <img src="{% static 'img/price-status.svg' %}" alt="Гаманець"><span>Сума замовлення:</span> {{ order.order_amount }} грн
+                </div>
+            </div>
+
+            <div class="order-info__info-section">
+                <div class="order-status">
+                    <p class="order-status__status">
+                        <span>{{ order.get_status_display }}</span>
+                        {% if order.status == order.Status.COMPLETED %}
+                            ✅
+                        {% elif order.status == order.Status.NOT_PERFORMER %}
+                            ❌
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    {% include "orders/components/order_list.html" %}
+{% endblock %}

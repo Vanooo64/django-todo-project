@@ -1,27 +1,30 @@
+{% load static %}
 <div class="container-fluid">
   <footer class="row row-cols-1 row-cols-sm-2 row-cols-md-5 py-5 my-5 border-top" style="background-color: black;">
 
 
     <div class="col-sm-3 me-auto">
       <a href="/" class="footer-logo">
-        <img src="/img/logo-diplomua.svg" alt="Diplom.ua">
+        <img src="{% static 'img/logo.png' %}" alt="logo" class="w-50 h-auto">
       </a>
       <div class="footer-cr">
-        <p><span style="font-size:14px" class="nav-link p-0 text-white" >© Diplom.UA - Біржа інформаційних послуг для студентів в Україні. </span></p>
+        <p><span style="font-size:14px" class="nav-link p-0 text-white" >© Work4Study.UA - Біржа інформаційних послуг для студентів в Україні. </span></p>
         <p><span style="font-size:14px" class="nav-link p-0 text-white" >Швидко, якісно, без зайвих витрат.</span></p>
           </div>
-          <div class="footer-payment">
-            <div class="footer-payment__item">
-              <img src="/img/payment/visa.svg" alt="Visa">
-            </div>
-            <div class="footer-payment__item">
-              <img src="/img/payment/mastercard.svg" alt="Mastercard">
-            </div>
-            <div class="footer-payment__item">
-              <img src="/img/payment/liqpay.svg" alt="Liqpay">
+            <div class="footer-payment" style="display: flex; gap: 10px; align-items: center;">
+              <div class="footer-payment__item">
+                <img src="{% static 'img/visa.svg' %}" alt="visa">
+              </div>
+
+              <div class="footer-payment__item">
+                <img src="{% static 'img/mastercard.svg' %}" alt="mastercard">
+              </div>
+
+              <div class="footer-payment__item ">
+                <img src="{% static 'img/liqpay.svg' %}" alt="Liqpay">
+              </div>
             </div>
           </div>
-    </div>
 
     <div class="col mb-3 ms-auto">
       <h5 class="text-white">Про компанію</h5>

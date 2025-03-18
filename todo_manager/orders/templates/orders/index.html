@@ -1,24 +1,11 @@
-{% extends "orders/base.html" %}
+{% extends "base.html" %}
 
-{% block title %}
-  Order Index
-{% endblock title %}
+{% block title %}Замовлення{% endblock %}
 
-  {% block content %}
-    <h1>Список замовлень </h1>
-    <h2>Замовлення</h2>
-    <ul>
-      {% for order in order_lists %}
-        <li>{{ order.title }} 
-          {% if order.status == 0 %}
-            ❌
-          {% elif order.status == 1 %}
-            🦾
-          {% elif order.status == 2 %}
-            ✅
-          {% endif %}
-            </li>
-      {% endfor %}
-    </ul>  
- 
-  {% endblock content %}
+{% block content %}
+<h1 class="text-center">Додаток замовлень</h1>
+  {% include "orders/components/order_list.html" %}
+  <a href="{% url "orders:list" %}" class="link-primary">Всі замовлення</a>
+  <p><a href="{% url "orders:not_performer" %}" class="link-primary">Замовлення без виконавців</a></p>
+{% endblock content %}
+
