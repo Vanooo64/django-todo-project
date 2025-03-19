@@ -6,26 +6,27 @@
 {% endblock title %}
 
 {% block content %}
-    <h3 class="text-center">Інформація по замовленню</h3>
-    <div class="order-info">
-    <div class="order-info__back-link">
-    </div>
 
-    <div class="order-info__wrapper">
-        <div class="order-info__header">
-            <div class="order-info__order-type">
-                {{ order.get_type_of_work_display }}, {{ order.subject }}
-            </div>
-            <div class="order-info__order-name">
-                {{ order.title }}
-            </div>
-        </div>
 
-        <div class="order-info__status-wrapper">
-            <div class="order-info__info-section">
-                <div class="order-price">
-                    <img src="{% static 'img/price-status.svg' %}" alt="Гаманець"><span>Сума замовлення:</span> {{ order.order_amount }} грн
-                </div>
+
+<h3 class="text-center">Інформація по замовленню</h3>
+<table class="table">
+
+  <tbody>
+    <tr>
+      <td><img src="{% static 'img/favorite_active.svg' %}" alt="Фавікон">{{ order.get_type_of_work_display }}, {{ order.subject }}</td>
+      <td><img src="{% static 'img/price-status.svg' %}" alt="Гаманець"><span>Сума замовлення:</span> {{ order.order_amount }} грн</td>
+    </tr>
+    <tr>
+      <td><strong>{{ order.title }}</strong></td>
+      <td><img src="{% static 'img/time-green-status.svg' %}" alt="Таймер"><span>Термін здачі :</span> {{ order.deadline }} </td>
+    </tr>
+  </tbody>
+</table>
+
+
+            <div class="order-price">
+                    <span>Скачати файл:</span> {{ order.file_upload }}
             </div>
 
             <div class="order-info__info-section">

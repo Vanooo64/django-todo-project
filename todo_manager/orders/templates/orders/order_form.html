@@ -1,0 +1,14 @@
+{% extends "base.html"%}
+
+{% block title %}
+  Create new Order
+{% endblock title %}
+
+{% block content %}
+  <h3 class="text-center">Створити нове замовлення</h3>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <input type="submit" value="Відправити">
+    </form>
+{% endblock %}

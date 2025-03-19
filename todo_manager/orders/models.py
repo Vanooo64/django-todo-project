@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.utils.timezone import now
 from datetime import timedelta
 from django.conf import settings
-from django.utils.text import slugify
+
 
 User = get_user_model()
 
@@ -86,6 +86,12 @@ class Order(models.Model):
     deadline = models.DateTimeField(default=default_deadline, verbose_name="Термін здачі замовлення")
 
     status = models.IntegerField(choices=Status.choices, default=Status.NOT_PERFORMER, verbose_name="Статус")
+
+    def get_absolute_url(self):
+        return reverse(
+            "orders:detail",
+            kwargs={"pk": self.pk}
+        )
 
     class Meta:
         ordering = ['-time_create']

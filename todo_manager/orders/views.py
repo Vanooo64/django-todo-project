@@ -1,7 +1,9 @@
 from django.shortcuts import render
 from django.http import HttpRequest, HttpResponse
-from django.views.generic import TemplateView, ListView, DeleteView
+from django.urls import reverse
+from django.views.generic import TemplateView, ListView, DeleteView,CreateView
 
+from .forms import OrderForm
 from .models import Order
 
 
@@ -23,5 +25,11 @@ class OrderListNotPerformerView(ListView):
 class OrderShowView(DeleteView):
     model = Order
     template_name = 'orders/show_detail.html'
+
+
+class OrderCreateView(CreateView):
+    model = Order
+    form_class = OrderForm
+
 
     
