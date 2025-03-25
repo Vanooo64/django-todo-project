@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load static %}
+{% load forms_extras %}
+
+{% block content %}
+<main class="form-signin d-flex justify-content-center align-items-center" style="height: 100vh;">
+  <form method="post" class="w-100" style="max-width: 400px;">
+    {% csrf_token %}
+
+    <h1 class="h3 mb-3 fw-normal text-center">Вхід до Work4Study</h1>
+
+  <div class="form-floating" style="margin-bottom: 15px;">
+    {{ form.username|add_class:"form-control w-100" }}
+    <label for="{{ form.username.id_for_label }}">Логін</label>
+  </div>
+
+  <div class="form-floating" style="margin-bottom: 15px;">
+    {{ form.password|add_class:"form-control w-100" }}
+    <label for="{{ form.password.id_for_label }}">Пароль</label>
+  </div>
+
+    <div class="checkbox mb-3">
+      <label>
+        <input type="checkbox" name="remember-me"> Запам'ятати мене
+      </label>
+    </div>
+
+    <button class="w-100 btn btn-lg btn-primary" type="submit">Увійти</button>
+    <p class="mt-5 mb-3 text-muted text-center">© 2025</p>
+  </form>
+</main>
+{% endblock %}

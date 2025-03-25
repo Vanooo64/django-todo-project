@@ -31,5 +31,9 @@ class OrderCreateView(CreateView):
     model = Order
     form_class = OrderForm
 
+    def form_valid(self, form):
+        form.instance._current_user = self.request.user
+        return super().form_valid(form)
+
 
     

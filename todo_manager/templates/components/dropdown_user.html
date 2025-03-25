@@ -1,0 +1,61 @@
+{% load static %}
+
+<div class="btn-group">
+    <a class="d-flex align-items-center text-decoration-none" href="#" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+      {% if user.profile_picture %}
+        <img src="{{ user.profile.profile_picture.url }}" class="rounded-circle" width="40" height="40" alt="Фото профілю">
+      {% else %}
+        <img src="{% static 'img/default-profile.png' %}" class="rounded-circle" width="40" height="40" alt="<Базове фото>">
+      {% endif %}
+    </a>
+    <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+        {{ user.username }} <!-- Виводить ім'я користувача -->
+    </button>
+
+  {% if user.is_authenticated %}
+  <div class="dropdown">
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+      <li class="px-3 py-2">
+        <strong>{{ user.username }}</strong><br>
+        <small>Баланс: {{ user.profile.balance }}</small>
+        <p><small>Рейтинг: {{ user.profile.rating }}</small></p>
+      </li>
+
+       <li class="d-flex justify-content-center"> <!-- Центрування кнопки -->
+        <a class="dropdown-item text-white bg-warning rounded-pill px-3 py-1 w-auto text-center" href="{% url 'cabinet' %}">
+          <i class="fas fa-user me-2"></i> <!-- Іконка кабінету -->
+          Особистий кабінет
+        </a>
+      </li>
+
+      <li><hr class="dropdown-divider"></li>
+
+      <li><a class="dropdown-item text-primary" href="{% url 'profile' username=user.username %}">
+        <i class="fas fa-cogs me-2"></i> <!-- Іконка налаштувань -->
+        Налаштування профіля
+      </a></li>
+
+      <li>
+        <form method="POST" action="{% url 'logout' %}">
+          {% csrf_token %}
+          <button type="submit" class="dropdown-item text-danger">
+            <i class="fas fa-sign-out-alt me-2"></i> <!-- Іконка виходу -->
+            Вийти
+          </button>
+        </form>
+      </li>
+      </form>
+
+      </li>
+    </ul>
+  </div>
+
+
+  {% else %}
+  <div >
+    <li><a class="dropdown-item" href="{% url 'login' %}">Увійти</a></li> <!-- Лінк на сторінку входу -->
+    <li><a class="dropdown-item" href="{% url 'register' %}">Зареєструватися</a></li> <!-- Лінк на сторінку реєстрації -->
+  </div>
+  {% endif %}
+</div>
+

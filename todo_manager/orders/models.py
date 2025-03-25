@@ -57,7 +57,6 @@ class Order(models.Model):
         on_delete=models.CASCADE,
         related_name="customer_orders",
         verbose_name="Замовник",
-        default=get_default_user,  # Передаємо функцію без виклику
         null=True, blank=True
     )
 
@@ -87,11 +86,7 @@ class Order(models.Model):
 
     status = models.IntegerField(choices=Status.choices, default=Status.NOT_PERFORMER, verbose_name="Статус")
 
-    def get_absolute_url(self):
-        return reverse(
-            "orders:detail",
-            kwargs={"pk": self.pk}
-        )
+
 
     class Meta:
         ordering = ['-time_create']
@@ -101,10 +96,13 @@ class Order(models.Model):
     def __str__(self):
         return f"{self.title} ({self.get_type_of_work_display()}) - {self.order_amount} грн - {self.plagiarism_percentage}%"
 
-    # def get_absolute_url(self):
-    #     return reverse('order', kwargs={'order_slug': self.slug})
-    #
-    # def save(self, *args, **kwargs):
-    #     if not self.slug:
-    #         self.slug = slugify(self.title)
-    #     super().save(*args, **kwargs)
+    def get_absolute_url(self):
+        return reverse(
+            "orders:detail",
+            kwargs={"pk": self.pk}
+        )
+
+    def save(self, *args, **kwargs):
+        if not self.customer and hasattr(self, '_current_user'):
+            self.customer = self._current_user
+        super().save(*args, **kwargs)
