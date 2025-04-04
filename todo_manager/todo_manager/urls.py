@@ -17,10 +17,17 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
+from users.views import ExecutorCabinetView
 
 urlpatterns = [
     path('', TemplateView.as_view(template_name='index.html'), name='index'),
+    # path("", ExecutorCabinetView.as_view(), name="index"),
+    # path('', TemplateView.as_view(template_name='base_executor_cabinet.html'), name='index'),
+    path('chat/', include('chat.urls')),
+    path('notifications/', include('notifications.urls')),
     path('orders/', include('orders.urls')),
+    path('balance/', include('balance.urls')),
+    path('reviews/', include('reviews.urls')),
     path('users/', include('users.urls')),
     path('admin/', admin.site.urls),
 ]

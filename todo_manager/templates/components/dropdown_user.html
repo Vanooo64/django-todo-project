@@ -22,21 +22,31 @@
       </li>
 
        <li class="d-flex justify-content-center"> <!-- Центрування кнопки -->
-        <a class="dropdown-item text-white bg-warning rounded-pill px-3 py-1 w-auto text-center" href="{% url 'cabinet' %}">
-          <i class="fas fa-user me-2"></i> <!-- Іконка кабінету -->
-          Особистий кабінет
-        </a>
-      </li>
+         {% if user.user_type == 'customer' %}
+         <!-- Кнопка для кабінету замовника -->
+         <a class="dropdown-item text-white bg-warning rounded-pill px-4 py-1 mx-3  w-auto text-center" href="{% url 'users:cabinet_customer' %}">
+            <i class="fas fa-user me-2"></i> <!-- Іконка кабінету -->
+            Особистий кабінет
+         </a>
+       </li>
+
+        {% elif user.user_type == 'executor'  %}
+         <!-- Кнопка для кабінету замовника -->
+         <a class="dropdown-item text-white bg-warning rounded-pill px-4 py-1 mx-3  w-auto text-center" href="{% url 'users:cabinet_executor' %}">
+           <i class="fas fa-user me-2"></i> <!-- Іконка кабінету -->
+           Особистий кабінет
+       </li>
+        {% endif %}
 
       <li><hr class="dropdown-divider"></li>
 
-      <li><a class="dropdown-item text-primary" href="{% url 'profile' username=user.username %}">
+      <li><a class="dropdown-item text-primary" href="{% url 'users:profile' username=user.username %}">
         <i class="fas fa-cogs me-2"></i> <!-- Іконка налаштувань -->
         Налаштування профіля
       </a></li>
 
       <li>
-        <form method="POST" action="{% url 'logout' %}">
+        <form method="POST" action="{% url 'users:logout' %}">
           {% csrf_token %}
           <button type="submit" class="dropdown-item text-danger">
             <i class="fas fa-sign-out-alt me-2"></i> <!-- Іконка виходу -->
@@ -50,11 +60,19 @@
     </ul>
   </div>
 
-
   {% else %}
-  <div >
-    <li><a class="dropdown-item" href="{% url 'login' %}">Увійти</a></li> <!-- Лінк на сторінку входу -->
-    <li><a class="dropdown-item" href="{% url 'register' %}">Зареєструватися</a></li> <!-- Лінк на сторінку реєстрації -->
+  <div>
+      <li><a class="dropdown-item" href="{% url 'users:login' %}">Увійти</a></li> <!-- Лінк на сторінку входу -->
+
+      <li class="nav-item dropdown">
+          <a class="dropdown-item dropdown-toggle" href="#" id="registerDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+              Зареєструватися
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="registerDropdown">
+              <li><a class="dropdown-item" href="{% url 'users:register' %}?role=customer">Реєстрація замовника</a></li>
+              <li><a class="dropdown-item" href="{% url 'users:register' %}?role=executor">Реєстрація автора</a></li>
+          </ul>
+      </li>
   </div>
   {% endif %}
 </div>

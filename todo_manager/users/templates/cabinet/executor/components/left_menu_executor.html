@@ -1,0 +1,87 @@
+<div class="LeftMenu">
+    <!-- Навігаційне меню -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <!-- Кнопка для мобільних екранів -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Меню -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav flex-column">
+                <li class="nav-item">
+                    <p class="GroupHeader GroupHeader-first">Замовлення</p>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/orders/search">Пошук нових замовлень</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/orders/favorites">Обрані</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/orders/suggested-prices">Запропоновані ціни</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/orders/closed">Закриті</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/orders/in-progress">У виконанні</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/orders/ready">Готові</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/orders/personal">Персональні замовлення</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/orders/urgent">Термінові замовлення 🔥</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/orders/earn-more">
+                        Заробити більше
+                        <div class="NewBadge"><span class="NewBadge__text">new</span></div>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <p class="GroupHeader">Повідомлення</p>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/notifications">Сповіщення <span class="counter">2</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/templates">Шаблони</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/orders/new">Нові замовлення <span class="counter">79</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/customers">Мої замовники</a>
+                </li>
+
+                <li class="nav-item">
+                    <p class="GroupHeader">Особистий рахунок</p>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/balance/withdraw">Вивести гроші</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/balance/deposit">Поповнити баланс</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/balance/history">Історія операцій</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/bonuses">Збільшити дохід</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
+
+
+{% block extra_styles %}
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'users/css/user_styles.css' %}">
+{% endblock extra_styles %}

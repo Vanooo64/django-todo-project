@@ -1,0 +1,42 @@
+{% block extra_styles %}
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'users/css/styles_work_page_customer.css' %}">
+{% endblock extra_styles %}
+
+{% block content %}
+<div class="orders-header">
+    <div class="ListOrdersLayout__heading-inner">
+        <div class="ListOrdersLayout__title">Мої замовлення</div>
+    </div>
+</div>
+
+<div class="orders-wrapper orders-responsive orders-padding">
+    <div class="ListOrders">
+        <div class="OrdersFromActiveCategory">
+            {% if customer_orders %}
+                {% for order in customer_orders %}
+                    <div class="OrderItem">
+                        <h3><a href="{% url 'orders:detail' pk=order.pk %}">{{ order.title }}</a></h3>
+                        <p>{{ order.description }}</p>
+                        <small>Створено: {{ order.created_at|date:"d.m.Y H:i" }}</small>
+                        <p><strong>Статус:</strong> {{ order.get_status_display }}</p>
+                    </div>
+                    <hr>
+                {% endfor %}
+            {% else %}
+                <div class="EmptyList" data-testid="empty-list-component">
+                    <a class="footer-logo">
+                        <img src="{% static 'img/logo.png' %}" alt="logo" class="w-50 h-auto">
+                    </a>
+                    <h2 data-testid="header">Замовлень поки немає</h2>
+                    <p data-testid="comment">Тут будуть всі ваші замовлення</p>
+                    <a class="dropdown-item text-white bg-warning rounded-pill px-4 py-1 mx-3 w-auto text-center" href="{% url 'orders:create' %}">
+                        <i class="fas fa-user me-2"></i> <!-- Іконка кабінету -->
+                        Створити нове замовлення
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -11,8 +11,18 @@
           {% if user.is_authenticated %}
             {% include "components/dropdown_user.html" %}
           {% else %}
-            <a href="{% url 'register' %}" class="btn btn-outline-primary">Зареєструватися</a>
-            <a href="{% url 'login' %}" class="btn btn-outline-warning">Увійти</a>
+            <div class="d-flex gap-2">
+              <a href="{% url 'users:login' %}" class="btn btn-outline-warning">Увійти</a>
+              <div class="btn-group">
+                <button type="button" class="btn btn-outline-primary dropdown-toggle" id="registerDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                  Зареєструватися
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="registerDropdown">
+                  <li><a class="dropdown-item" href="{% url 'users:register' %}?role=customer">Хочу бути замовником</a></li>
+                  <li><a class="dropdown-item" href="{% url 'users:register' %}?role=executor">Хочу бути автором</a></li>
+                </ul>
+              </div>
+            </div>
           {% endif %}
         </div>
       </div>
@@ -32,9 +42,6 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">Контакти</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url "orders:index" %}">Замовлення</a>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">

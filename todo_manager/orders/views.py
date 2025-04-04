@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.http import HttpRequest, HttpResponse
 from django.urls import reverse
@@ -7,19 +8,36 @@ from .forms import OrderForm
 from .models import Order
 
 
-class OrderListIndexView(ListView):
-    template_name = 'orders/order_item_list.html'
-    queryset = Order.objects.all()[:2]
-
-
-class OrderListView(ListView):
+class OrderListCustomerView(LoginRequiredMixin, ListView): #список замовлень для замовника
     model = Order
-    template_name = 'orders/index.html'
+    template_name = 'orders/components/orders_customer_list.html'
+    context_object_name = 'orders'
+
+    def get_queryset(self):
+        user = self.request.user
+        return Order.objects.filter(customer=user)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+        context['customer_orders'] = Order.objects.filter(customer=user)
+        return context
 
 
-class OrderListNotPerformerView(ListView):
-    template_name = 'orders/not_performer.html'
-    queryset = Order.objects.filter(status=Order.Status.NOT_PERFORMER).all()
+class OrderListExecutorView(LoginRequiredMixin, ListView): #список замовлень для виконавця
+    model = Order
+    template_name = 'orders/orders_executor_list.html'
+    context_object_name = 'orders'
+
+    def get_queryset(self):
+        user = self.request.user
+        return Order.objects.filter(executor=user)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+        context['executor_orders'] = Order.objects.filter(executor=user)
+        return context
 
 
 class OrderShowView(DeleteView):
@@ -34,6 +52,8 @@ class OrderCreateView(CreateView):
     def form_valid(self, form):
         form.instance._current_user = self.request.user
         return super().form_valid(form)
+
+
 
 
     

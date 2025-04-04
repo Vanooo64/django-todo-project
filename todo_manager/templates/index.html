@@ -5,13 +5,82 @@
 {% endblock title %}
 
   {% block content %}
-    <h1>Welcome to our TODO App!</h1>
-    <h2>Work in progress...</h2>
-    <h3>It is {% now "jS F Y H:i:s" %}</h3>
+
+  <div class="b-disclaimer__container u-container u-container_size_sm4 u-container_adapt_default">
+      <div class="b-disclaimer__holder">
+          <div class="b-disclaimer__icon-holder">
+              <img class="b-disclaimer__icon lazyloaded"
+                   data-src="https://assets-cdn.system-vs.com/assets/images/lamp.svg?1648651024"
+                   alt=""
+                   role="presentation"
+                   src="https://assets-cdn.system-vs.com/assets/images/lamp.svg?1648651024"
+                   title="">
+          </div>
+          <div class="b-disclaimer__text">
+              <noindex>Експерти сайту "Worf4Study!" проводять роботу з підбору, обробки та структурування матеріалу за запропонованою замовником темою. Результат цієї роботи не є готовою науковою працею, але може бути джерелом для його написання.</noindex>
+          </div>
+      </div>
+  </div>
+
+
+<div class="b-prefooter__row">
+    <div class="b-prefooter__col b-prefooter__col_customer">
+        <div class="b-prefooter__item">
+            <img class="b-prefooter__bg-img b-prefooter__bg-img_customer lazyloaded"
+                 data-src="https://assets-cdn.system-vs.com/assets/images/prefooter-customer.png?1625040365"
+                 alt="" role="presentation" title=""
+                 src="https://assets-cdn.system-vs.com/assets/images/prefooter-customer.png?1625040365">
+            <div class="b-prefooter__title">Для замовників</div>
+            <div class="b-prefooter__text">
+                Тепер ви знаєте про «Всё сдал!». <br>
+                Вибір за вами. Розмістіть завдання <br>
+                і перевірте, як все працює. <br>
+                Це швидко і безкоштовно.
+            </div>
+            <div class="b-prefooter__button-wrap">
+                <a href="{% url 'users:register' %}?role=customer"
+                   class="btn btn-primary btn-gradient u-button u-button_orange u-button_adapt_default">
+                    Розмістити завдання
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="b-prefooter__col b-prefooter__col_executor">
+        <div class="b-prefooter__item">
+            <img class="b-prefooter__bg-img b-prefooter__bg-img_executor"
+                 src="https://assets-cdn.system-vs.com/assets/images/prefooter-executor.png?1625040365"
+                 alt="Для експертів">
+            <div class="b-prefooter__title">Для експертів</div>
+            <div class="b-prefooter__text">
+                Ви пропонуєте ціни, а ми<br>
+                виплачуємо 100% вашого заробітку.<br>
+                Жодних посередників. Надавайте<br>
+                допомогу студентам і заробляйте!
+            </div>
+            <div class="b-prefooter__button-wrap">
+                <a href="{% url 'users:register' %}?role=executor"
+                   class="btn btn-success btn-gradient u-button u-button_orange u-button_adapt_default">
+                    Стати експертом
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
     <div>
       <div>
          <a class="nav-link" href="{% url "orders:create" %}">Розмістити замовлення</a>
       </div>
     </div>
 
+<img class="b-page__bg-img b-page__bg-img_homepage-intro-city lazyloaded" data-src="https://assets-cdn.system-vs.com/assets/images/homepage-intro-city.png?1625040365" alt="" role="presentation" src="https://assets-cdn.system-vs.com/assets/images/homepage-intro-city.png?1625040365" title="">
+
+
   {% endblock %}
+
+{% block extra_styles %}
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/styles_index.css' %}">
+{% endblock extra_styles %}

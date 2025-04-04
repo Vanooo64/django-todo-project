@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Особистий кабінет{% endblock %}
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <!-- Лівий контейнер для великих екранів 20%, на малих 100% -->
+    <div class="left_menu">
+      {% include "cabinet/customer/components/left_menu_customer.html" %}
+    </div>
+
+    <!-- Правий контейнер для великих екранів 80%, на малих 100% -->
+    <div class="work_page">
+      {% include "cabinet/customer/components/order_list_customer.html"%}
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
+
+{% block extra_styles %}
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'users/css/user_styles.css' %}">
+{% endblock extra_styles %}

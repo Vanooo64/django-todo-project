@@ -47,6 +47,10 @@ INSTALLED_APPS = [
     'bootstrap5',
     'users.apps.UsersConfig',
     'orders.apps.OrdersConfig',
+    'chat.apps.ChatConfig',
+    'notifications.apps.NotificationsConfig',
+    'balance.apps.BalanceConfig',
+    'reviews.apps.ReviewsConfig',
 ]
 
 MIDDLEWARE = [
@@ -65,7 +69,7 @@ ROOT_URLCONF = 'todo_manager.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR, 'templates'],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -73,11 +77,12 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'todo_manager.context_processors.user_info',
             ],
         },
     },
 ]
+
+
 
 WSGI_APPLICATION = 'todo_manager.wsgi.application'
 

@@ -1,0 +1,52 @@
+<div class="LeftMenu">
+    <!-- Навігаційне меню -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <!-- Кнопка для мобільних екранів -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Меню -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav flex-column">
+                <li class="nav-item">
+                    <p class="GroupHeader GroupHeader-first">ЗАМОВЛЕННЯ</p>
+                </li>
+                <li class="nav-item">
+                    <a class="dropdown-item text-white bg-warning rounded-pill px-4 py-1 mx-0 w-100 text-center" href="{% url 'orders:create' %}">
+                        <i class="fas fa-user me-2"></i> <!-- Іконка кабінету -->
+                        Нове замовлення
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'orders:customer' %}">Мої замовлення</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'orders:executor' %}">Мої виконавці</a>
+                </li>
+
+                <li class="nav-item">
+                    <p class="GroupHeader">ОСОБИСТИЙ РАХУНОК</p>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'balance:withdraw' %}">Вивести гроші</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'balance:deposit' %}">Поповнити баланс</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'balance:history' %}">Історія операцій</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'notifications:notifications_home' %}">Сповіщення <span class="counter">2</span></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
+
+{% block extra_styles %}
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'users/css/user_styles.css' %}">
+{% endblock extra_styles %}

@@ -1,8 +1,46 @@
 .container {
     background-color: #f5f5f5; /* Світло-сірий фон */
-    padding: 20px;
+    padding: 4mm;
+    max-width: 1300px; /* Встановіть необхідну ширину */
+    margin: 0 auto; /* Центрування контейнера */
+    display: flex;
+    flex-wrap: wrap;
 }
 
-.col-md-2, .col-md-10 {
+.left_menu {
+    flex: 1;
+    width: 20%;
+    min-width: 250px; /* Мінімальна ширина */
+}
+
+.work_page {
+    flex: 3;
+    width: 80%;
+    background-color: white; /* Білий фон */
+    border-radius: 10px; /* Завкруглені краї */
+    padding: 20px; /* Відступи всередині */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Легке тіньове відображення для кращого вигляду */
+}
+
+.LeftMenu a.MenuLink {
+    display: block; /* Перетворює кожне посилання на блоковий елемент, що дасть йому займати цілий рядок */
+    margin-bottom: 5px; /* Додає відступ між посиланнями для кращого вигляду */
+}
+
+/* Якщо потрібно, ви можете додати стилі для navbar на малих екранах */
+.navbar-nav {
     margin-top: 10px;
 }
+
+.navbar-toggler-icon {
+    background-color: #000;
+}
+
+.NewBadge {
+    background-color: #f00;
+    color: #fff;
+    padding: 5px;
+    border-radius: 50%;
+    font-size: 12px;
+}
+

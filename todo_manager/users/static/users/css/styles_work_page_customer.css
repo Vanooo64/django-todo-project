@@ -1,0 +1,33 @@
+.orders-header {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #ccc; /* Лінія під заголовком */
+}
+
+.EmptyList {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Центрує елементи горизонтально */
+    justify-content: center; /* Центрує елементи вертикально */
+    text-align: center; /* Вирівнює текст */
+    height: 100%; /* Можна задати, якщо контейнер має висоту */
+}
+
+.orders-wrapper {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.orders-responsive {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.orders-padding {
+    padding: 20px;
+}
