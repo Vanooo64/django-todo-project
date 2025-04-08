@@ -40,9 +40,15 @@ class OrderListExecutorView(LoginRequiredMixin, ListView): #список зам�
         return context
 
 
-class OrderShowView(DeleteView):
+class OrderShowViewCustomer(DeleteView):
     model = Order
-    template_name = 'orders/show_detail.html'
+    context_object_name = 'order'
+    template_name = 'orders/customer/show_detail_customer.html'
+
+
+class OrderShowViewExecutor(DeleteView):
+    model = Order
+    template_name = 'orders/executor/show_detail_executor.html'
 
 
 class OrderCreateView(CreateView):

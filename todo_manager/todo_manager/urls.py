@@ -21,8 +21,6 @@ from users.views import ExecutorCabinetView
 
 urlpatterns = [
     path('', TemplateView.as_view(template_name='index.html'), name='index'),
-    # path("", ExecutorCabinetView.as_view(), name="index"),
-    # path('', TemplateView.as_view(template_name='base_executor_cabinet.html'), name='index'),
     path('chat/', include('chat.urls')),
     path('notifications/', include('notifications.urls')),
     path('orders/', include('orders.urls')),

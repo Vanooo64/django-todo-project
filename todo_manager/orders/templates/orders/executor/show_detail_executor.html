@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Особистий кабінет{% endblock %}
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <!-- Лівий контейнер для великих екранів 20%, на малих 100% -->
+    <div class="left_menu">
+      {% include "cabinet/executor/components/left_menu_executor.html" %}
+    </div>
+
+    <!-- Правий контейнер для великих екранів 80%, на малих 100% -->
+    <div class="work_page">
+      {% block work_page %}
+        <h3 class="text-center">Інформація по замовленню</h3>
+        <table class="table">
+          <tbody>
+            <tr>
+              <td>
+                <img src="{% static 'img/favorite_active.svg' %}" alt="Фавікон">
+                {{ order.get_type_of_work_display }}, {{ order.subject }}
+              </td>
+              <td>
+                <img src="{% static 'img/price-status.svg' %}" alt="Гаманець">
+                <span>Сума замовлення:</span> {{ order.order_amount }} грн
+              </td>
+            </tr>
+            <tr>
+              <td><strong>{{ order.title }}</strong></td>
+              <td>
+                <img src="{% static 'img/time-green-status.svg' %}" alt="Таймер">
+                <span>Термін здачі:</span> {{ order.deadline }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="order-price">
+          <span>Скачати файл:</span>
+          {% if order.file_upload %}
+            <a href="{{ order.file_upload.url }}">{{ order.file_upload.name }}</a>
+          {% else %}
+            Немає файлу
+          {% endif %}
+        </div>
+
+        <div class="order-info__info-section">
+          <div class="order-status">
+            <p class="order-status__status">
+              <span>{{ order.get_status_display }}</span>
+              {% if order.status == order.Status.COMPLETED %}
+                ✅
+              {% elif order.status == order.Status.NOT_PERFORMER %}
+                ❌
+              {% endif %}
+            </p>
+          </div>
+        </div>
+      {% endblock work_page %}
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

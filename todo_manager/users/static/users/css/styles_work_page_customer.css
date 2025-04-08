@@ -13,21 +13,31 @@
     align-items: center; /* Центрує елементи горизонтально */
     justify-content: center; /* Центрує елементи вертикально */
     text-align: center; /* Вирівнює текст */
-    height: 100%; /* Можна задати, якщо контейнер має висоту */
 }
 
 .orders-wrapper {
     width: 100%;
-    max-width: 1200px;
     margin: 0 auto;
+     box-sizing: border-box; /* Переконайтесь, що елементи враховують padding і border */
 }
 
 .orders-responsive {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
 }
 
 .orders-padding {
     padding: 20px;
+}
+
+@media (max-width: 768px) {
+    .orders-wrapper {
+        width: 100%;
+    }
+
+    .orders-responsive {
+        flex-direction: column; /* У мобільному вигляді блоки йдуть вертикально */
+        align-items: stretch; /* Тягнемо блоки по ширині */
+    }
 }

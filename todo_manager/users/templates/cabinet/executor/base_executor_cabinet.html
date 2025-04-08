@@ -10,10 +10,11 @@
     <div class="left_menu">
       {% include "cabinet/executor/components/left_menu_executor.html" %}
     </div>
-
     <!-- Правий контейнер для великих екранів 80%, на малих 100% -->
     <div class="work_page">
-      <!-- Вміст для правого контейнера -->
+      {% block work_page %}
+      {% include "cabinet/executor/components/order_list_executor.html" %}
+      {% endblock work_page %}
     </div>
   </div>
 </div>

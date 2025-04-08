@@ -13,7 +13,11 @@
 
     <!-- Правий контейнер для великих екранів 80%, на малих 100% -->
     <div class="work_page">
-      {% include "cabinet/customer/components/order_list_customer.html"%}
+      {% if customer_orders %}
+      {% include "cabinet/customer/components/order_list_customer.html" %}
+      {% else %}
+      {% include "cabinet/customer/components/no_orders.html" %}
+      {% endif %}
     </div>
   </div>
 </div>

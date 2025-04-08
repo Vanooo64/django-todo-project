@@ -7,7 +7,7 @@ from django.contrib.auth import login, logout, get_user_model
 from django.views import View
 from django.views.decorators.http import require_POST
 
-from orders.models import User
+from orders.models import User, Order
 from .forms import CustomUserRegistrationForm
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.decorators import login_required
@@ -82,8 +82,11 @@ class CustomerCabinetView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         user = request.user
 
+        customer_orders = Order.objects.filter(customer=user).order_by('-time_create')
+
         context = {
             "user": user,
+            "customer_orders":customer_orders,
         }
 
         return render(request, self.template_name, context)
@@ -95,8 +98,14 @@ class ExecutorCabinetView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         user = request.user
 
+        executor_orders = Order.objects.filter(
+            executor__isnull=True,
+            status=Order.Status.NOT_PERFORMER
+        ).order_by('-time_create')
+
         context = {
             "user": user,
+            "executor_orders": executor_orders,
         }
 
         return render(request, self.template_name, context)
