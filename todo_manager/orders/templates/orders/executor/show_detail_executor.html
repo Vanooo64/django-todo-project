@@ -12,6 +12,7 @@
       {% include "cabinet/executor/components/left_menu_executor.html" %}
     </div>
 
+
     <!-- Правий контейнер для великих екранів 80%, на малих 100% -->
     <div class="work_page">
       {% block work_page %}
@@ -35,8 +36,28 @@
                 <span>Термін здачі:</span> {{ order.deadline }}
               </td>
             </tr>
+
+            <tr>
+              <td colspan="2" class="text-center">
+                <div class="d-flex align-items-center justify-content-center gap-2">
+                  <a class="d-flex align-items-center text-decoration-none" href="#" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    {% if user.profile_picture %}
+                      <img src="{{ user.profile.profile_picture.url }}" class="rounded-circle" width="40" height="40" alt="Фото профілю">
+                    {% else %}
+                      <img src="{% static 'img/default-profile.png' %}" class="rounded-circle" width="40" height="40" alt="Базове фото">
+                    {% endif %}
+                  </a>
+                  <div>
+                    <span>Автор замовлення:</span> {{ user.username }}
+                  </div>
+                </div>
+              </td>
+            </tr>
+
           </tbody>
         </table>
+
+
 
         <div class="order-price">
           <span>Скачати файл:</span>
@@ -64,4 +85,7 @@
   </div>
 </div>
 
+
 {% endblock content %}
+
+
