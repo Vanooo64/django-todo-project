@@ -1,7 +1,4 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render
-from django.http import HttpRequest, HttpResponse
-from django.urls import reverse
 from django.views.generic import TemplateView, ListView, DeleteView,CreateView
 
 from .forms import OrderForm
@@ -58,6 +55,8 @@ class OrderCreateView(CreateView):
     def form_valid(self, form):
         form.instance._current_user = self.request.user
         return super().form_valid(form)
+
+
 
 
 

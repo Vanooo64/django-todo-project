@@ -4,7 +4,6 @@
 {% block title %}Особистий кабінет{% endblock %}
 
 {% block content %}
-
 <div class="container">
   <div class="row">
     <!-- Лівий контейнер для великих екранів 20%, на малих 100% -->
@@ -12,80 +11,121 @@
       {% include "cabinet/executor/components/left_menu_executor.html" %}
     </div>
 
-
     <!-- Правий контейнер для великих екранів 80%, на малих 100% -->
     <div class="work_page">
       {% block work_page %}
-        <h3 class="text-center">Інформація по замовленню</h3>
-        <table class="table">
-          <tbody>
-            <tr>
-              <td>
-                <img src="{% static 'img/favorite_active.svg' %}" alt="Фавікон">
-                {{ order.get_type_of_work_display }}, {{ order.subject }}
-              </td>
-              <td>
-                <img src="{% static 'img/price-status.svg' %}" alt="Гаманець">
-                <span>Сума замовлення:</span> {{ order.order_amount }} грн
-              </td>
-            </tr>
-            <tr>
-              <td><strong>{{ order.title }}</strong></td>
-              <td>
-                <img src="{% static 'img/time-green-status.svg' %}" alt="Таймер">
-                <span>Термін здачі:</span> {{ order.deadline }}
-              </td>
-            </tr>
 
-            <tr>
-              <td colspan="2" class="text-center">
-                <div class="d-flex align-items-center justify-content-center gap-2">
-                  <a class="d-flex align-items-center text-decoration-none" href="#" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                    {% if user.profile_picture %}
-                      <img src="{{ user.profile.profile_picture.url }}" class="rounded-circle" width="40" height="40" alt="Фото профілю">
-                    {% else %}
-                      <img src="{% static 'img/default-profile.png' %}" class="rounded-circle" width="40" height="40" alt="Базове фото">
-                    {% endif %}
-                  </a>
-                  <div>
-                    <span>Автор замовлення:</span> {{ user.username }}
-                  </div>
-                </div>
-              </td>
-            </tr>
+      <h3 class="text-center">Інформація по замовленню</h3>
+      <table class="table order-detail-table">
+        <tbody>
 
-          </tbody>
-        </table>
+          <!-- Рядок з типом роботи та сумою -->
+          <tr class="order-detail-row-type">
+            <td class="order-detail-cell-with-icon">
+              <img src="{% static 'orders/img/favorite_active.svg' %}" alt="Фавікон">
+              {{ order.get_type_of_work_display }}, {{ order.subject }}
+            </td>
+            <td class="order-detail-cell-with-icon">
+              <img src="{% static 'orders/img/price-status.svg' %}" alt="Гаманець">
+              <span>Сума замовлення:</span> {{ order.order_amount }} грн
+            </td>
+          </tr>
 
+          <!-- Рядок з назвою роботи та терміном -->
+          <tr class="order-detail-row-title">
+            <td><strong>{{ order.title }}</strong></td>
+            <td class="order-detail-cell-with-icon">
+              <img src="{% static 'orders/img/time-green-status.svg' %}" alt="Таймер">
+              <span>Термін здачі:</span> {{ order.deadline }}
+            </td>
+          </tr>
 
-
-        <div class="order-price">
-          <span>Скачати файл:</span>
-          {% if order.file_upload %}
-            <a href="{{ order.file_upload.url }}">{{ order.file_upload.name }}</a>
-          {% else %}
-            Немає файлу
-          {% endif %}
-        </div>
-
-        <div class="order-info__info-section">
-          <div class="order-status">
-            <p class="order-status__status">
+          <!-- Рядок зі статусом роботи -->
+          <tr class="order-info__info-section">
+            <td><strong>Статус роботи:</strong></td>
+            <td class="order-detail-cell-with-icon">
               <span>{{ order.get_status_display }}</span>
               {% if order.status == order.Status.COMPLETED %}
                 ✅
               {% elif order.status == order.Status.NOT_PERFORMER %}
                 ❌
               {% endif %}
-            </p>
-          </div>
-        </div>
+            </td>
+          </tr>
+
+          <!-- Рядок з інформацією про автора та кнопками дій -->
+          <tr class="order-detail-row-author">
+            <td colspan="3">
+              <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap px-3 py-2">
+
+                <!-- Аватар та ім’я автора -->
+                <div class="d-flex align-items-center gap-2 order-detail-author-info">
+                  <a class="d-flex align-items-center text-decoration-none" href="#" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    {% if user.profile_picture %}
+                      <img src="{{ user.profile.profile_picture.url }}" class="order-detail-author-image rounded-circle" width="40" height="40" alt="Фото профілю">
+                    {% else %}
+                      <img src="{% static 'img/default-profile.png' %}" class="order-detail-author-image rounded-circle" width="40" height="40" alt="Базове фото">
+                    {% endif %}
+                  </a>
+                  <div>
+                    <span>Автор замовлення:</span> {{ user.username }}
+                  </div>
+                </div>
+
+                <!-- Кнопки дій -->
+                <div class="d-flex align-items-center gap-2">
+                   <!-- Кнопка: Запропонувати ціну -->
+                  <button type="button"
+                          class="order-detail-btn-transparent bg-transparent border border-primary text-primary rounded-pill px-4 py-1 w-auto text-center"
+                          data-bs-toggle="modal"
+                          data-bs-ta  тrget="#priceModal">
+                    <i class="fas fa-user me-2"></i>
+                    Запропонувати ціну
+                  </button>
+
+
+                  <a class="order-detail-btn-message text-white bg-success rounded-pill px-4 py-1 w-auto text-center"
+                     href="{% url 'users:cabinet_customer' %}">
+                    <i class="fas fa-user me-2"></i>
+                    Написати замовнику
+                  </a>
+                </div>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Рядок із файлами -->
+          <tr class="order-detail-row-author order-detail-row-yellow">
+            <td colspan="5">
+              <h5 class="text-center">Прикріплені до завдання файли</h5>
+              <div class="order-price">
+                <span>Скачати файл:</span>
+                {% if order.file_upload %}
+                  <a href="{{ order.file_upload.url }}">{{ order.file_upload.name }}</a>
+                {% else %}
+                  Немає файлу
+                {% endif %}
+              </div>
+            </td>
+          </tr>
+
+          <!-- Рядок із вкладками -->
+          <tr class="order-detail-row-author order-detail-row-yellow">
+            <td colspan="4">
+              {% include "orders/components/content_tabs_for_show_detail_executor.html" %}
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+
       {% endblock work_page %}
     </div>
   </div>
 </div>
-
-
 {% endblock content %}
 
+{% block extra_styles %}
+  <link rel="stylesheet" href="{% static 'orders/css/show_ditale_order.css' %}?v={{ timestamp }}">
+{% endblock extra_styles %}
 

@@ -1,0 +1,24 @@
+<!-- Модальне вікно "Запропонувати ціну" -->
+<div class="modal fade" id="priceModal" tabindex="-1" aria-labelledby="priceModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="priceModalLabel">Запропонувати ціну</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрити"></button>
+      </div>
+
+      <div class="modal-body">
+        <form method="post" action="{% url 'orders:set_price' order.id %}">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="priceInput" class="form-label">Ціна (грн)</label>
+            <input type="number" name="price" class="form-control" id="priceInput" required>
+          </div>
+          <button type="submit" class="btn btn-success">Надіслати</button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
