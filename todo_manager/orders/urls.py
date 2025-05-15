@@ -11,5 +11,9 @@ urlpatterns = [
     path("customer/<int:pk>/", views.OrderShowViewCustomer.as_view(), name='detail_order_customer'),
     path("executor/<int:pk>/", views.OrderShowViewExecutor.as_view(), name='detail_order_executor'),
     path("create/", views.OrderCreateView.as_view(), name='create'),
-
+    path('<int:order_id>/bid/', views.submit_bid, name='submit_bid'), #пропозиція ціни виконавцем
+    path('<int:order_id>/select/<int:bid_id>/', views.select_executor, name='select_executor'), #вибір автора замовником
+    path("favorites/", views.orders_where_user_executor, name="orders_where_user_executor") # представлення списку де виконавця обрано для роботи "Вас обрано виконавцем"
 ]
+
+

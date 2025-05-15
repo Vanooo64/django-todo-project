@@ -16,7 +16,7 @@
                     <a class="nav-link" href="/orders/search">Пошук нових замовлень</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/orders/favorites">Обрані</a>
+                    <a class="nav-link" href="{% url 'orders:orders_where_user_executor' %}">Вас обрано виконавцем</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/orders/suggested-prices">Запропоновані ціни</a>

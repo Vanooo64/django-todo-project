@@ -10,5 +10,6 @@ class ChatAdmin(admin.ModelAdmin):
 
 
 @admin.register(Message)
-class MassageAdmin(admin.ModelAdmin):
-    list_display = ('id', 'chat', 'sender', 'content', 'timestamp', 'is_read')
+class MessageAdmin(admin.ModelAdmin):
+    list_display = ('id', 'sender', 'timestamp', 'text')
+

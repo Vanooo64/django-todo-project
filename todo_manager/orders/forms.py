@@ -1,6 +1,7 @@
 from django import forms
 
 from orders.models import Order
+from .models import Bid
 
 
 class OrderForm(forms.ModelForm):
@@ -13,3 +14,12 @@ class OrderForm(forms.ModelForm):
             "deadline": forms.DateInput(attrs={"type": "date", "class": "form-control"}),
         }
 
+
+class BidForm(forms.ModelForm):
+    class Meta:
+        model = Bid
+        fields = ['price', 'comment']
+        widgets = {
+            'price': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Ціна'}),
+            'comment': forms.Textarea(attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'Коментар'}),
+        }

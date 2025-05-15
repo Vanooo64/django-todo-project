@@ -18,7 +18,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent  # Використовуєм�
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',  # Тепер це правильний шлях
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
@@ -38,6 +38,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -84,8 +85,8 @@ TEMPLATES = [
 ]
 
 
-
 WSGI_APPLICATION = 'todo_manager.wsgi.application'
+ASGI_APPLICATION = 'todo_manager.asgi.application'
 
 
 # Database
@@ -157,3 +158,16 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+#підходить лише для тестування й не використовується в продакшн-середовищах.
+CHANNEL_LAYERS = {
+    'default': {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+}
+    },
+}
+
+

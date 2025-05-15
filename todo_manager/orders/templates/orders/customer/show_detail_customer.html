@@ -59,6 +59,32 @@
             </p>
           </div>
         </div>
+
+      <h3>Пропозиції виконавців</h3>
+{% if bids %}
+    <ul class="list-group mb-4">
+        {% for bid in bids %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <strong>{{ bid.executor.username }}</strong><br>
+                    Запропонована ціна: {{ bid.price }} грн<br>
+                    Коментар: {{ bid.comment|default:"(без коментаря)" }}
+                </div>
+                {% if not order.executor %}
+                    <form action="{% url 'orders:select_executor' order.id bid.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-success">Обрати виконавця</button>
+                    </form>
+                {% elif order.executor == bid.executor %}
+                    <span class="badge bg-success">Обраний виконавець</span>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Пропозицій поки що немає.</p>
+{% endif %}
+
       {% endblock work_page %}
     </div>
   </div>

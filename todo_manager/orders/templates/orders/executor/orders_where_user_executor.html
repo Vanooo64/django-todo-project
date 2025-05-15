@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Обрані замовлення{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    <!-- Лівий контейнер для великих екранів 20%, на малих 100% -->
+    <div class="left_menu">
+      {% include "cabinet/executor/components/left_menu_executor.html" %}
+    </div>
+
+    <!-- Правий контейнер для великих екранів 80%, на малих 100% -->
+    <div class="work_page">
+      <div class="container">
+        <h2 class="my-4 center">Замовлення, де ви обрані виконавцем</h2>
+          <div>
+            {% if orders %}
+              <ul class="list-group">
+                {% for order in orders %}
+                  <li class="list-group-item">
+                    <strong>{{ order.title }}</strong><br>
+                    Тип: {{ order.get_type_of_work_display }} | Предмет: {{ order.subject }}<br>
+                    Сума: {{ order.order_amount }} грн | Статус: {{ order.get_status_display }}<br>
+                    <a href="{% url 'orders:detail_order_executor' pk=order.pk %}">Переглянути</a>
+                  </li>
+                {% endfor %}
+              </ul>
+            {% else %}
+              <p>Вас ще не обрано виконавцем у жодному замовленні.</p>
+            {% endif %}
+          </div>
+      </div>
+{% endblock %}
+    </div>
+
+
+{% block extra_styles %}
+  <link rel="stylesheet" href="{% static 'orders/css/show_ditale_order.css' %}?v={{ timestamp }}">
+{% endblock extra_styles %}
+

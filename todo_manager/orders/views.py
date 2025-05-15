@@ -1,8 +1,10 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView, ListView, DeleteView,CreateView
 
-from .forms import OrderForm
-from .models import Order
+from .forms import OrderForm, BidForm
+from .models import Order, Bid
+from django.shortcuts import get_object_or_404, redirect, render
+from django.contrib.auth.decorators import login_required
 
 
 class OrderListCustomerView(LoginRequiredMixin, ListView): #список замовлень для замовника
@@ -42,6 +44,12 @@ class OrderShowViewCustomer(DeleteView):
     context_object_name = 'order'
     template_name = 'orders/customer/show_detail_customer.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['bids'] = Bid.objects.filter(order=self.object).select_related('executor')
+        return context
+
+
 
 class OrderShowViewExecutor(DeleteView):
     model = Order
@@ -58,6 +66,53 @@ class OrderCreateView(CreateView):
 
 
 
+@login_required                                                           #доступ до цієї функції мають лише авторизовані користувачі.
+def submit_bid(request, order_id):                                        #order_id передається як частина URL і визначає ідентифікатор замовлення, до якого виконавець подає пропозицію.
+    order = get_object_or_404(Order, pk=order_id)                         #Отримується об'єкт замовлення з моделі Order за первинним ключем order_id, або генерується помилка 404
+
+    # Перевірка: не дозволяти подати другу пропозицію
+    if Bid.objects.filter(order=order, executor=request.user).exists():   #якщо поточний користувач вже подав пропозицію до цього замовлення, відбувається перенаправлення назад до сторінки цього замовлення.
+        return redirect(order.get_absolute_url(request.user))
+
+    if request.method == 'POST':                                            #Якщо запит — це надсилання форми (POST), то
+
+        form = BidForm(request.POST)                                        #Створюється екземпляр форми з надісланими даними.
+        if form.is_valid():                                                 #Якщо форма валідна:
+            bid = form.save(commit=False)                                   #Створюється новий об’єкт Bid, але ще не зберігається в БД.
+            bid.executor = request.user                                     #Задаються поля executor (поточний користувач) і order (замовлення).
+            bid.order = order                                               #і order (замовлення).
+            bid.save()                                                      #Пропозиція зберігається у базу.
+            return redirect(order.get_absolute_url(request.user))           #Після чого відбувається перенаправлення на сторінку замовлення.
+
+    else:
+        form = BidForm()                                                    #Якщо це GET-запит, створюється порожня форма для заповнення
+
+    return render(request, 'orders:submit_bid', {'form': form, 'order': order}) #Повертається шаблон з формою подання пропозиції.
+
+
+@login_required
+def select_executor(request, order_id, bid_id):
+    order = get_object_or_404(Order, pk=order_id, customer=request.user)
+    bid = get_object_or_404(Bid, pk=bid_id, order=order)
+
+    order.executor = bid.executor
+    order.status = Order.Status.AT_WORK
+    order.order_amount = bid.price
+    order.save()
+
+    bid.is_selected = True
+    bid.save()
+
+    # Опціонально: деактивувати інші пропозиції
+    order.bids.exclude(pk=bid.pk).update(is_selected=False)
+
+    return redirect(order.get_absolute_url(request.user))
+
+
+@login_required
+def orders_where_user_executor(request): # представлення для замовлень в яких executor "Вас обрано виконавцем"
+    orders = Order.objects.filter(executor=request.user)
+    return render(request,'orders/executor/orders_where_user_executor.html', {"orders": orders})
 
 
 
