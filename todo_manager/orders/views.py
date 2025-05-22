@@ -1,5 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView, ListView, DeleteView,CreateView
+from notifications.models import Notification
 
 from .forms import OrderForm, BidForm
 from .models import Order, Bid
@@ -106,6 +107,13 @@ def select_executor(request, order_id, bid_id):
     # Опціонально: деактивувати інші пропозиції
     order.bids.exclude(pk=bid.pk).update(is_selected=False)
 
+    # Створити сповіщення для виконавця
+    Notification.objects.create(
+        user=bid.executor,
+        message=f"Вас обрано виконавцем для замовлення '{order.title}'",
+        order=order
+    )
+
     return redirect(order.get_absolute_url(request.user))
 
 
@@ -113,6 +121,18 @@ def select_executor(request, order_id, bid_id):
 def orders_where_user_executor(request): # представлення для замовлень в яких executor "Вас обрано виконавцем"
     orders = Order.objects.filter(executor=request.user)
     return render(request,'orders/executor/orders_where_user_executor.html', {"orders": orders})
+
+
+@login_required
+def orders_with_suggested_prices_executor(request): # представлення для замовлень в яких executor "зробив ставку"
+    # Знаходимо всі Bid цього користувача
+    bids = Bid.objects.filter(executor=request.user).select_related('order')
+    # Витягуємо id замовлень, де є ставки цього користувача
+    order_ids = bids.values_list('order_id', flat=True).distinct()
+    # Фільтруємо замовлення по цим id
+    orders = Order.objects.filter(id__in=order_ids)
+
+    return render(request,'orders/executor/orders_with_suggested_prices_executor.html', {"orders": orders})
 
 
 

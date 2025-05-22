@@ -79,6 +79,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'orders.context_processors.global_variables',
+                'notifications.context_processors.unread_notifications_count',  # Додано для сповіщень
             ],
         },
     },

@@ -19,7 +19,7 @@
                     <a class="nav-link" href="{% url 'orders:orders_where_user_executor' %}">Вас обрано виконавцем</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/orders/suggested-prices">Запропоновані ціни</a>
+                    <a class="nav-link" href="{% url 'orders:orders_with_suggested_prices_executor' %}">Запропоновані ціни</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/orders/closed">Закриті</a>
@@ -47,7 +47,12 @@
                     <p class="GroupHeader">Повідомлення</p>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/notifications">Сповіщення <span class="counter">2</span></a>
+                    <a class="nav-link" href="{% url 'notifications:notifications_list_executor' %}">
+                        Сповіщення
+                        {% if unread_notifications_count > 0 %}
+                            <span class="badge rounded-pill bg-danger ms-1">{{ unread_notifications_count }}</span>
+                        {% endif %}
+                    </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/templates">Шаблони</a>

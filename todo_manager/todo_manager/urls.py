@@ -22,7 +22,7 @@ from users.views import ExecutorCabinetView
 urlpatterns = [
     path('', TemplateView.as_view(template_name='index.html'), name='index'),
     path('chat/', include('chat.urls')),
-    path('notifications/', include('notifications.urls')),
+    path('notifications/', include('notifications.urls', namespace='notifications')),
     path('orders/', include('orders.urls')),
     path('balance/', include('balance.urls')),
     path('reviews/', include('reviews.urls')),
