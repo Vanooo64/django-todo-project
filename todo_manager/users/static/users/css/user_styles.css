@@ -4,7 +4,7 @@ html, body {
     padding: 0;
 }
 
-.container {
+.main-container {
     display: flex;
     flex-wrap: nowrap;
     background-color: #f5f5f5;
