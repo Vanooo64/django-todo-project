@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Сповіщення виконавця{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    <!-- Лівий контейнер для великих екранів 20%, на малих 100% -->
+    <div class="left_menu">
+      {% include "cabinet/executor/components/left_menu_executor.html" %}
+    </div>
+
+    <!-- Правий контейнер для великих екранів 80%, на малих 100% -->
+    <div class="work_page">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 class="mb-0">Ваші сповіщення (Виконавець)</h2>
+            <a href="{% url 'notifications:mark_notification_read' %}?next={{ request.path }}"
+            class="btn btn-sm btn-outline-primary">
+                Позначити всі як прочитані
+            </a>
+        </div>
+            <ul class="list-group">
+                {% for notification in notifications %}
+                    <li class="list-group-item{% if not notification.is_read %} list-group-item-info{% endif %}">
+                        {{ notification.message }}<br>
+                        {% if notification.order %}
+                            <a href="{% url 'orders:detail_order_executor' notification.order.id %}">
+                                Перейти до замовлення
+                            </a>
+                        {% endif %}
+                        <br>
+                        <small class="text-muted">{{ notification.created_at|date:"d.m.Y H:i" }}</small>
+                    </li>
+                {% empty %}
+                    <li class="list-group-item">Сповіщень немає.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_styles %}
+  <link rel="stylesheet" href="{% static 'orders/css/show_ditale_order.css' %}?v={{ timestamp }}">
+{% endblock extra_styles %}
+

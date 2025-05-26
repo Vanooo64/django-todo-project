@@ -13,7 +13,13 @@
                     <p class="GroupHeader GroupHeader-first">Замовлення</p>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/orders/search">Пошук нових замовлень</a>
+                    <a class="nav-link" href="{% url 'orders:search_new_orders_executor' %}">
+                        Пошук нових замовлень
+                        {% if new_orders_count > 0 %}
+                            <span class="badge rounded-pill bg-danger ms-1">{{ new_orders_count }}</span>
+                        {% endif %}
+                    </a>
+                    <p>new_orders_count = {{ new_orders_count }}</p>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'orders:orders_where_user_executor' %}">Вас обрано виконавцем</a>

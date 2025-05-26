@@ -6,6 +6,21 @@ from .forms import OrderForm, BidForm
 from .models import Order, Bid
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
+from django.utils import timezone
+from datetime import timedelta
+
+
+class OrderCreateView(CreateView):
+    model = Order
+    form_class = OrderForm
+
+    def form_valid(self, form):
+        form.instance._current_user = self.request.user
+        return super().form_valid(form)
+    
+    def get_success_url(self):
+        return self.object.get_absolute_url(self.request.user)
+
 
 
 class OrderListCustomerView(LoginRequiredMixin, ListView): #список замовлень для замовника
@@ -55,15 +70,6 @@ class OrderShowViewCustomer(DeleteView):
 class OrderShowViewExecutor(DeleteView):
     model = Order
     template_name = 'orders/executor/show_detail_executor.html'
-
-
-class OrderCreateView(CreateView):
-    model = Order
-    form_class = OrderForm
-
-    def form_valid(self, form):
-        form.instance._current_user = self.request.user
-        return super().form_valid(form)
 
 
 
@@ -135,7 +141,12 @@ def orders_with_suggested_prices_executor(request): # представлення
     return render(request,'orders/executor/orders_with_suggested_prices_executor.html', {"orders": orders})
 
 
-
-
-
-    
+@login_required
+def search_new_orders_executor(request):  # представлення списку з новими замовленнями де можна зробити ставку (за останні 3 дні)
+    three_days_ago = timezone.now() - timedelta(days=3)
+    orders = Order.objects.filter(
+        status=Order.Status.NOT_PERFORMER,
+        executor__isnull=True,
+        time_create__gte=three_days_ago
+    )
+    return render(request, 'orders/executor/search_new_orders_executor.html', {'orders': orders})

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 from pathlib import Path
 import os
+import dj_database_url  # Додайте у requirements.txt: dj-database-url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent  # Використовуємо Path
@@ -45,7 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'bootstrap5',
+    'django_bootstrap5',
     'users.apps.UsersConfig',
     'orders.apps.OrdersConfig',
     'chat.apps.ChatConfig',
@@ -80,6 +81,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'orders.context_processors.global_variables',
                 'notifications.context_processors.unread_notifications_count',  # Додано для сповіщень
+                'orders.context_processors.new_orders_count', # Додано для нових замовлень
             ],
         },
     },

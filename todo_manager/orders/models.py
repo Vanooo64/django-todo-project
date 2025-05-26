@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.utils.timezone import now
 from datetime import timedelta
 from django.conf import settings
+from django.utils import timezone
 
 
 User = get_user_model()
@@ -18,6 +19,7 @@ class Order(models.Model):
         NOT_PERFORMER = 0, 'Без виконавця'
         AT_WORK = 1, 'В роботі'
         COMPLETED = 2, 'Замовлення виконане'
+        INACTIVE = 3, 'Неактивне'
 
     class WorkTypes(models.IntegerChoices):
         TUTOR = 0, "Онлайн-репетитор"
@@ -101,7 +103,22 @@ class Order(models.Model):
             return reverse("orders:detail_order_customer", kwargs={"pk": self.pk})
         else:
             return reverse("orders:detail_order_executor", kwargs={"pk": self.pk})
-
+    
+    def is_active_for_executor(self): #метод для перевірки "активності" замовлення
+        if self.status != self.Status.NOT_PERFORMER:
+            return False
+        deadline = self.time_create + timedelta(days=3)
+        return timezone.now() < deadline
+    
+    def time_left_for_executor(self): #метод для перевірки часу, що залишився до дедлайну
+        deadline = self.time_create + timedelta(days=3)
+        delta = deadline - timezone.now()
+        if delta.total_seconds() <= 0:
+            return "Час вийшов"
+        days = delta.days
+        hours = delta.seconds // 3600
+        return f"{days} дн. {hours} год."
+    
 
     def save(self, *args, **kwargs):
         if not self.customer and hasattr(self, '_current_user'):
@@ -110,7 +127,7 @@ class Order(models.Model):
 
 
 class Bid(models.Model):
-    order = models.ForeignKey('Order', on_delete=models.CASCADE, related_name='bids', verbose_name="Замовлення")
+    order = models.ForeignKey('Order', on_delete=models.CASCADE, related_name='bid_set', verbose_name="Замовлення")
     executor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='bids', verbose_name="Виконавець")
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Запропонована ціна (грн)")
     comment = models.TextField(blank=True, verbose_name="Коментар виконавця")

@@ -15,6 +15,7 @@ urlpatterns = [
     path('<int:order_id>/select/<int:bid_id>/', views.select_executor, name='select_executor'), #вибір автора замовником
     path("favorites/", views.orders_where_user_executor, name="orders_where_user_executor"), # представлення списку де виконавця обрано для роботи "Вас обрано виконавцем"
     path("suggested/", views.orders_with_suggested_prices_executor, name="orders_with_suggested_prices_executor"), # представлення списку де виконавець executor "зробив ставку"
+    path("new/", views.search_new_orders_executor, name="search_new_orders_executor"), # представлення списку з новими замовленнями де можна зробити ставку 
 ]
 
 
