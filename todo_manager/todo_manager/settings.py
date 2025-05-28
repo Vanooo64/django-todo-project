@@ -28,12 +28,13 @@ DATABASES = {
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-_573py0!)pq25wir)t$7!s67e4rn-6fs5_!xhvlo_c968iewd0'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-_573py0!)pq25wir)t$7!s67e4rn-6fs5_!xhvlo_c968iewd0')
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
 
 
 # Application definition
@@ -95,17 +96,20 @@ ASGI_APPLICATION = 'todo_manager.asgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'todo_manager_db',  # Переконайтеся, що це правильна назва бази
-        'USER': 'ivansavchenko',
-        'PASSWORD': 'eTCnF824d5',  # Якщо потрібно, вкажіть пароль
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
+    'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'todo_manager_db',  # Переконайтеся, що це правильна назва бази
+#         'USER': 'ivansavchenko',
+#         'PASSWORD': 'eTCnF824d5',  # Якщо потрібно, вкажіть пароль
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     }
+# }
 
 # DATABASES = {
 #     'default': {
@@ -153,6 +157,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -164,12 +169,15 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 #підходить лише для тестування й не використовується в продакшн-середовищах.
+import urllib.parse
+redis_url = os.environ.get('REDIS_URL', 'redis://127.0.0.1:6379')
+parsed_redis = urllib.parse.urlparse(redis_url)
 CHANNEL_LAYERS = {
     'default': {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [("127.0.0.1", 6379)],
-}
+            "hosts": [redis_url],
+        },
     },
 }
 

@@ -3,7 +3,7 @@ Django==5.1.6
 sqlparse==0.5.3
 typing_extensions==4.12.2
 
-users~=1.0.dev0
+# users~=1.0.dev0
 channels~=4.2.2
 pip~=25.0.1
 wheel~=0.38.4
