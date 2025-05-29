@@ -1,0 +1,54 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.main-container {
+    display: flex;
+    flex-wrap: nowrap;
+    background-color: #f5f5f5;
+    padding: 20px;
+    width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
+    min-height: 100vh; /* Забезпечує, що сторінка займатиме всю висоту */
+}
+
+.left_menu {
+    width: 250px; /* Фіксована ширина */
+    min-width: 250px;
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-right: 20px;
+    box-sizing: border-box;
+}
+
+.work_page {
+    flex: 1 !important;  /* Забезпечує, що правий контейнер займає весь вільний простір */
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: auto;
+    margin: 0;
+    box-sizing: border-box;
+    min-height: 100vh; /* Забезпечує, що сторінка займатиме всю висоту */
+    height: calc(100vh - 40px); /* Враховує паддінги і відступи */
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .left_menu, .work_page {
+        width: 100% !important; /* Забезпечує, що на маленьких екранах блоки займають 100% ширини */
+    }
+
+    .work_page {
+        margin-top: 20px;
+    }
+}

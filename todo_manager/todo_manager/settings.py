@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import os
 import dj_database_url  # Додайте у requirements.txt: dj-database-url
+from dotenv import load_dotenv # Завантажуємо змінні середовища з .env файлу
+
+load_dotenv() # Завантажуємо змінні середовища з .env файлу
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent  # Використовуємо Path
