@@ -1,0 +1,25 @@
+# The services section defines the web service for the application.
+services:
+  - type: web
+    name: work4study
+    env: python
+    buildCommand: |
+      pip install -r requirements.txt
+      python manage.py migrate
+      python manage.py collectstatic --noinput
+    startCommand: gunicorn todo_manager.wsgi:application --bind 0.0.0.0:$PORT
+
+
+
+    # Exported from Render on 2025-05-29T12:22:09Z
+databases:
+- name: work4study
+  databaseName: work4study
+  user: work4study_user
+  plan: free
+  region: frankfurt
+  ipAllowList:
+  - source: 0.0.0.0/0
+    description: everywhere
+  postgresMajorVersion: "16"
+version: "1"
