@@ -12,9 +12,6 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import os
 import dj_database_url  # Додайте у requirements.txt: dj-database-url
-from dotenv import load_dotenv # Завантажуємо змінні середовища з .env файлу
-
-load_dotenv() # Завантажуємо змінні середовища з .env файлу
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent  # Використовуємо Path
@@ -31,13 +28,12 @@ DATABASES = {
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-_573py0!)pq25wir)t$7!s67e4rn-6fs5_!xhvlo_c968iewd0')
-
+SECRET_KEY = 'django-insecure-_573py0!)pq25wir)t$7!s67e4rn-6fs5_!xhvlo_c968iewd0'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+DEBUG = True
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0']
 
 
 # Application definition
@@ -49,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
     'django_bootstrap5',
     'users.apps.UsersConfig',
@@ -61,6 +58,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -99,24 +97,24 @@ ASGI_APPLICATION = 'todo_manager.asgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+
 DATABASES = {
-    'default': dj_database_url.config(
-        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}"
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'todo_manager_db',  # Переконайтеся, що це правильна назва бази
+        'USER': 'ivansavchenko',
+        'PASSWORD': 'eTCnF824d5',  # Якщо потрібно, вкажіть пароль
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
 }
 
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'todo_manager_db',  # Переконайтеся, що це правильна назва бази
-#         'USER': 'ivansavchenko',
-#         'PASSWORD': 'eTCnF824d5',  # Якщо потрібно, вкажіть пароль
-#         'HOST': 'localhost',
-#         'PORT': '5432',
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',  # Вказує на файл бази даних в корені вашого проєкту
 #     }
 # }
-
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -155,9 +153,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 
-STATIC_URL = 'static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') # Додано для збору статичних файлів
+
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -169,15 +168,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 #підходить лише для тестування й не використовується в продакшн-середовищах.
-import urllib.parse
-redis_url = os.environ.get('REDIS_URL', 'redis://127.0.0.1:6379')
-parsed_redis = urllib.parse.urlparse(redis_url)
 CHANNEL_LAYERS = {
     'default': {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [redis_url],
-        },
+            "hosts": [("127.0.0.1", 6379)],
+}
     },
 }
 

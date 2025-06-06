@@ -1,18 +1,18 @@
 from django.db import models
-from django.contrib.auth import get_user_model
 from django.urls import reverse
 from django.utils.timezone import now
 from datetime import timedelta
 from django.conf import settings
 from django.utils import timezone
 
-
-User = get_user_model()
-
 # Окрема функція для отримання користувача за замовчуванням
+from django.contrib.auth import get_user_model
+
 def get_default_user():
-    user = User.objects.order_by('id').first()  # Повертає першого користувача
-    return user.id if user else None  # Якщо немає користувачів, повертає None
+    User = get_user_model()
+    user = User.objects.order_by('id').first()# Повертає першого користувача
+    return user.id if user else None # Якщо немає користувачів, повертає None
+
 
 class Order(models.Model):
     class Status(models.IntegerChoices):

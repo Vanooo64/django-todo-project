@@ -27,5 +27,9 @@
 
   {% include "components/footer.html" %}
   <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  
+  {% block extra_scripts %}
+  <!-- Тут будуть додаткові скрипти -->
+  {% endblock extra_scripts %}
 </body>
 </html>

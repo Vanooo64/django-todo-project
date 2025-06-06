@@ -18,7 +18,7 @@
                     <div class="OrderItem">
                         <h3><a href="{% url 'orders:detail_order_customer' pk=order.pk %}">{{ order.title }}</a></h3>
                         <p>{{ order.description }}</p>
-                        <small>Створено: {{ order.created_at|date:"d.m.Y H:i" }}</small>
+                        <small>Створено: {{ order.time_create|date:"d.m.Y H:i" }}</small>
                         <p><strong>Статус:</strong> {{ order.get_status_display }}</p>
                     </div>
                     <hr>

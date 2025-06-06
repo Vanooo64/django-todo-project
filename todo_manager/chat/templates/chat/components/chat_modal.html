@@ -1,0 +1,28 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'chat/css/chat.css' %}">
+
+<div class="modal fade" id="chatModal" tabindex="-1" aria-labelledby="chatModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="chatModalLabel">Чат із замовником</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрити"></button>
+      </div>
+      <div class="modal-body p-0">
+        <div class="card h-100 w-100 border-0" id="chat2" style="border-radius:0;">
+          <div class="card-body" id="chat-log" style="position: relative; height: 400px; overflow-y: auto;">
+            <!-- Повідомлення будуть додаватися тут через JS -->
+          </div>
+          <div class="card-footer text-muted d-flex justify-content-start align-items-center p-3">
+            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3-bg.webp"
+                 alt="avatar 3" style="width: 40px; height: 100%;">
+            <input type="text" class="form-control form-control-lg" id="chat-message-input" placeholder="Введіть ваше повідомлення...">
+            <a class="ms-1 text-muted" href="#!"><i class="fas fa-paperclip"></i></a>
+            <a class="ms-3 text-muted" href="#!"><i class="fas fa-smile"></i></a>
+            <a class="ms-3" href="#!" id="chat-message-submit"><i class="fas fa-paper-plane"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

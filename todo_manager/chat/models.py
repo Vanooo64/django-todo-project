@@ -1,12 +1,11 @@
 from django.db import models
 
-from orders.models import Order
 from users.models import CustomUser
 
 
 # Create your models here.
 class Chat(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='chats')
+    order = models.ForeignKey("orders.Order", on_delete=models.CASCADE, related_name='chats')  # Рядкове посилання
     customer = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='chats_as_customer')
     executor = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='chats_as_executor')
     created_at = models.DateTimeField(auto_now_add=True)
