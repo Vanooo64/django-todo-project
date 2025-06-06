@@ -6,12 +6,12 @@
 {% block content %}
 <div class="container">
   <div class="row">
-    <!-- Лівий контейнер для великих екранів 20%, на малих 100% -->
+    <!-- Лівий контейнер для великих екранів (20%, на малих – 100%) -->
     <div class="left_menu">
       {% include "cabinet/customer/components/left_menu_customer.html" %}
     </div>
 
-    <!-- Правий контейнер для великих екранів 80%, на малих 100% -->
+    <!-- Правий контейнер для великих екранів (80%, на малих – 100%) -->
     <div class="work_page">
       {% block work_page %}
         <h3 class="text-center">Інформація по замовленню</h3>
@@ -59,34 +59,62 @@
           </div>
         </div>
 
-      <h3>Пропозиції виконавців</h3>
-{% if bids %}
-    <ul class="list-group mb-4">
-        {% for bid in bids %}
-            <li class="list-group-item d-flex justify-content-between align-items-center">
+        <h3>Пропозиції виконавців</h3> 
+                <!-- Кнопка для відкриття чату із виконавцем -->
+        <button type="button"
+                class="btn btn-primary mb-3"
+                data-bs-toggle="modal"
+                data-bs-target="#chatModal"
+                style="display: block !important; background-color: red;">
+          Написати виконавцю
+        </button>
+        
+        {% if bids %}
+          <ul class="list-group mb-4">
+            {% for bid in bids %}
+              <li class="list-group-item d-flex justify-content-between align-items-center">
                 <div>
-                    <strong>{{ bid.executor.username }}</strong><br>
-                    Запропонована ціна: {{ bid.price }} грн<br>
-                    Коментар: {{ bid.comment|default:"(без коментаря)" }}
+                  <strong>{{ bid.executor.username }}</strong><br>
+                  Запропонована ціна: {{ bid.price }} грн<br>
+                  Коментар: {{ bid.comment|default:"(без коментаря)" }}
                 </div>
                 {% if not order.executor %}
-                    <form action="{% url 'orders:select_executor' order.id bid.id %}" method="post">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-success">Обрати виконавця</button>
-                    </form>
+                  <form action="{% url 'orders:select_executor' order.id bid.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-success">Обрати виконавця</button>
+                  </form>
                 {% elif order.executor == bid.executor %}
-                    <span class="badge bg-success">Обраний виконавець</span>
+                  <span class="badge bg-success">Обраний виконавець</span>
                 {% endif %}
-            </li>
-        {% endfor %}
-    </ul>
-{% else %}
-    <p>Пропозицій поки що немає.</p>
-{% endif %}
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p>Пропозицій поки що немає.</p>
+        {% endif %}
+
+       
 
       {% endblock work_page %}
     </div>
   </div>
 </div>
 
+<!-- Підключаємо модальне вікно чату (шаблон з chat/components/chat_modal.html) -->
+{% include "chat/components/chat_modal.html" %}
+
 {% endblock content %}
+
+{% block extra_scripts %}
+  <script>
+    // Використовуємо order.id як унікальний chatRoomName для цього замовлення
+    window.chatRoomName = "{{ order.id }}";
+    // Поточний користувач (замовник)
+    window.currentUser = "{{ user.username }}";
+  </script>
+  <script src="{% static 'chat/js/chat.js' %}"></script>
+{% endblock extra_scripts %}
+
+{% block extra_styles %}
+  <link rel="stylesheet" href="{% static 'orders/css/show_ditale_order.css' %}?v={{ timestamp }}">
+{% endblock extra_styles %}
