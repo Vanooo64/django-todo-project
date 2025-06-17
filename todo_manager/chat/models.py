@@ -3,20 +3,21 @@ from django.db import models
 from users.models import CustomUser
 
 
-# Create your models here.
 class Chat(models.Model):
     order = models.ForeignKey("orders.Order", on_delete=models.CASCADE, related_name='chats')  # Рядкове посилання
     customer = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='chats_as_customer')
-    executor = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='chats_as_executor')
+    executor = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, related_name='chats_as_executor', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = ('order', 'executor')
+        unique_together = ('order', 'customer') # Унікальне об'єднання для запобігання дублювання
         verbose_name = "Чат"
         verbose_name_plural = "Чати"
 
     def __str__(self):
-        return f"Чат: {self.order.title} [{self.customer.username} ↔ {self.executor.username}]"
+        executor_username = self.executor.username if self.executor else "необраний"
+        return f"Чат: {self.order.title} [{self.customer.username} ↔ {executor_username}]"
+
 
 
 class Message(models.Model):

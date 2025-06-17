@@ -144,18 +144,28 @@
 
           <div class="mb-3">
             <label for="priceInput" class="form-label">Ціна за роботу</label>
-            <input type="number" step="0.01" name="price" class="form-control" id="priceInput" required>
+            <input type="number" step="0.01" name="price" class="form-control" id="priceInput"
+              value="{{ form.price.value|default_if_none:'' }}" required>
+            <textarea name="comment" class="form-control" id="commentInput" rows="3">{{ form.comment.value|default_if_none:'' }}</textarea>
           </div>
 
           <div class="mb-3">
             <label for="commentInput" class="form-label">Мій коментар (необов’язково)</label>
-            <textarea name="comment" class="form-control" id="commentInput" rows="3"></textarea>
+            <textarea name="comment" class="form-control" id="commentInput" rows="3">{{ form.comment.value|default_if_none:'' }}</textarea>
           </div>
 
           <div class="modal-footer">
             <button type="submit" class="btn btn-primary">Надіслати пропозицію</button>
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Скасувати</button>
           </div>
+
+          <!-- Повідомлення, якщо вже є існуюча пропозиція -->         
+          {% if existing_bid %}
+            <div class="alert alert-info">
+              Ви вже надсилали пропозицію. Ви можете її змінити або доповнити.
+            </div>
+          {% endif %}
+
         </form>
       </div>
 
@@ -171,9 +181,29 @@
   <script>
     window.chatRoomName = "{{ order.id }}";
     window.currentUser = "{{ user.username }}";
+
+    document.addEventListener("DOMContentLoaded", function () {
+      const chatSocket = new WebSocket(
+        "ws://" + window.location.host + "/ws/chat/" + window.chatRoomName + "/"
+      );
+
+      document.getElementById("priceModal").addEventListener("submit", function (event) {
+        const commentField = document.getElementById("commentInput");
+        const commentText = commentField.value.trim();
+
+        if (commentText) {
+          // Відправляємо коментар у WebSocket
+          chatSocket.send(JSON.stringify({ message: commentText, sender: window.currentUser }));
+
+          // Очищуємо поле після відправки
+          commentField.value = "";
+        }
+      });
+    });
   </script>
   <script src="{% static 'chat/js/chat.js' %}"></script>
 {% endblock extra_scripts %}
+
 
 
 {% block extra_styles %}

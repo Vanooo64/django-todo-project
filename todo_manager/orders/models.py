@@ -130,7 +130,7 @@ class Bid(models.Model):
     order = models.ForeignKey('Order', on_delete=models.CASCADE, related_name='bid_set', verbose_name="Замовлення")
     executor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='bids', verbose_name="Виконавець")
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Запропонована ціна (грн)")
-    comment = models.TextField(blank=True, verbose_name="Коментар виконавця")
+    comment = models.TextField(blank=True, null=True, verbose_name="Коментар виконавця") 
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата подання")
     is_selected = models.BooleanField(default=False, verbose_name="Вибрано замовником")
 

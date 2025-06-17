@@ -1,11 +1,11 @@
 console.log('chat.js loaded', window.chatRoomName);
 
 document.addEventListener('DOMContentLoaded', function() {
-  const roomName = window.chatRoomName; // Передаємо roomName через глобальну змінну
-  if (!roomName) return;
+  const orderId = window.chatRoomName; // Передаємо order_id через глобальну змінну
+  if (!orderId) return;
 
   const chatSocket = new WebSocket(
-    'ws://' + window.location.host + '/ws/chat/' + roomName + '/'
+    'ws://' + window.location.host + '/ws/chat/order/' + orderId + '/'
   );
 
   // Функція для додавання повідомлення до DOM
@@ -53,13 +53,26 @@ document.addEventListener('DOMContentLoaded', function() {
     console.error('WebSocket-зʼєднання закрите неочікувано');
   };
 
+  // Функція для надсилання повідомлення
+  function sendMessage() {
+    const inputField = document.getElementById('chat-message-input');
+    const message = inputField.value.trim();
+    if (message !== '') {
+      chatSocket.send(JSON.stringify({ 'message': message, 'order_id': orderId })); // Додаємо order_id
+      inputField.value = ''; // Очищення поля вводу після відправки
+    }
+  }
+
   // Надсилання повідомлення по кліку на кнопку
   document.getElementById('chat-message-submit').onclick = function(e) {
-    const inputField = document.getElementById('chat-message-input');
-    const message = inputField.value;
-    if (message.trim() !== '') {
-      chatSocket.send(JSON.stringify({ 'message': message }));
-      inputField.value = '';
-    }
+    sendMessage();
   };
+
+  // Надсилання повідомлення при натисканні клавіші Enter
+  document.getElementById('chat-message-input').addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+      event.preventDefault(); // Запобігаємо стандартному переходу рядка
+      sendMessage();
+    }
+  });
 });
