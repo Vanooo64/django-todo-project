@@ -27,9 +27,11 @@
 
   {% include "components/footer.html" %}
   <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-  
+
+  {% include "chat/components/chat_modal.html" %}
+
   {% block extra_scripts %}
-  <!-- Тут будуть додаткові скрипти -->
+  <script src="{% static 'js/jquery.min.js' %}"></script> # jQuery для Bootstrap
   {% endblock extra_scripts %}
 </body>
 </html>

@@ -87,6 +87,8 @@ def submit_bid(request, order_id):                                        #order
             bid = form.save(commit=False)  #Зберігається об'єкт Bid, але ще не зберігається в базі даних.
             bid.executor = request.user  #Задається поле executor (поточний користувач).
             bid.order = order  #Задається поле order (замовлення).
+            bid.comment = form.cleaned_data.get('comment')  #Отримується коментар з форми.
+            bid.price = form.cleaned_data.get('price')  #Отримується ціна з форми.
             bid.save()  #Пропозиція зберігається в базу даних.
 
             if bid.comment or bid.price:

@@ -52,15 +52,34 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data):
         """ Отримання нового повідомлення та його збереження у базі """
         data = json.loads(text_data)
+
         message = data.get('message', '')
+        comment = data.get('comment')
+        price = data.get('price')
+
         sender_user = self.scope.get("user")
+
+        # 🧼 Якщо comment і message однакові — не зберігай message як окреме повідомлення
+        if comment and message and comment.strip() == message.strip():
+            message = ''
 
         if sender_user and sender_user.is_authenticated:
             sender = sender_user.username
-            saved_message = await self.save_message(sender_user.id, message)
+
+            # 🔐 Зберігаємо тільки за наявності будь-якого вмісту
+            if message or comment or price:
+                saved_message = await self.save_message(
+                    sender_user.id,
+                    message,
+                    comment,
+                    price
+                )
+            else:
+                saved_message = None
         else:
             sender = "Анонім"
             saved_message = None
+
 
         # Надсилання повідомлення тільки у групу, що відповідає `order_id`
         await self.channel_layer.group_send(
@@ -69,6 +88,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 'type': 'chat_message',
                 'message': saved_message.text if saved_message else message,
                 'sender': sender,
+                'timestamp': saved_message.timestamp.strftime('%Y-%m-%d %H:%M:%S'),
+                'comment': saved_message.comment if saved_message else comment,
+                'price': saved_message.price if saved_message else price    
             }
         )
 
@@ -78,15 +100,18 @@ class ChatConsumer(AsyncWebsocketConsumer):
             'type': 'chat_message',
             'message': event['message'],
             'sender': event['sender'],
+            'timestamp': event.get('timestamp', ''),
+            'comment': event.get('comment', ''),
+            'price': str(event.get('price', '')) if event.get('price') else ''
         }))
 
     @database_sync_to_async
-    def save_message(self, sender_id, text):
+    def save_message(self, sender_id, text, comment=None, price=None):
         """ Збереження повідомлення з прив’язкою до `order_id` """
         sender = User.objects.get(id=sender_id)
         order = Order.objects.get(id=self.order_id)  # Фільтрація по замовленню
         chat, created = Chat.objects.get_or_create(order=order)
-        return Message.objects.create(chat=chat, sender=sender, text=text)
+        return Message.objects.create(chat=chat, sender=sender, text=text, comment=comment, price=price)
 
     @database_sync_to_async
     def get_chat(self):
@@ -95,9 +120,14 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         chat, created = Chat.objects.get_or_create (
             order=order, 
-            customer=order.customer,                                    
-            defaults={'executor': order.executor }
+            customer=order.customer,                                
         )
+
+        # Якщо чат створено і у замовлення вже є виконавець — встановлюємо його
+        if created and order.executor:
+            chat.executor = order.executor
+            chat.save()
+
         return chat
 
     @database_sync_to_async
@@ -109,7 +139,13 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
             return []
         messages = Message.objects.filter(chat=chat).order_by("timestamp")
-        return [{"sender": msg.sender.username, "message": msg.text, "timestamp": msg.timestamp.strftime('%Y-%m-%d %H:%M:%S')} for msg in messages]
+        return [{
+            "sender": msg.sender.username, 
+            "message": msg.text, 
+            "timestamp": msg.timestamp.strftime('%Y-%m-%d %H:%M:%S'),
+            "comment": msg.comment, 
+            "price": str(msg.price) if msg.price is not None else ''
+        } for msg in messages]
     
     @database_sync_to_async
     def user_has_chat_access(self, user):
@@ -120,7 +156,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         is_customer = order.customer == user
         is_executor = order.executor == user
         has_bid = Bid.objects.filter(order=order, executor=user).exists()
-        
+       
         return is_customer or is_executor or has_bid
 
 

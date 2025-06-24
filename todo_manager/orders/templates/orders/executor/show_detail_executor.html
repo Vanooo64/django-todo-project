@@ -139,14 +139,13 @@
 
       <!-- Тіло модального вікна (форма) -->
       <div class="modal-body">
-        <form method="post" action="{% url 'orders:submit_bid' order.id %}">
+        <form id='bid-form' method="post" action="{% url 'orders:submit_bid' order.id %}">
           {% csrf_token %}
 
           <div class="mb-3">
             <label for="priceInput" class="form-label">Ціна за роботу</label>
             <input type="number" step="0.01" name="price" class="form-control" id="priceInput"
               value="{{ form.price.value|default_if_none:'' }}" required>
-            <textarea name="comment" class="form-control" id="commentInput" rows="3">{{ form.comment.value|default_if_none:'' }}</textarea>
           </div>
 
           <div class="mb-3">
@@ -158,6 +157,7 @@
             <button type="submit" class="btn btn-primary">Надіслати пропозицію</button>
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Скасувати</button>
           </div>
+        </form>
 
           <!-- Повідомлення, якщо вже є існуюча пропозиція -->         
           {% if existing_bid %}
@@ -165,13 +165,10 @@
               Ви вже надсилали пропозицію. Ви можете її змінити або доповнити.
             </div>
           {% endif %}
-
-        </form>
-      </div>
-
     </div>
   </div>
-</div>
+</div>  
+
 
 <!-- Modal для чату -->
 {% include "chat/components/chat_modal.html" %}
@@ -184,7 +181,7 @@
 
     document.addEventListener("DOMContentLoaded", function () {
       const chatSocket = new WebSocket(
-        "ws://" + window.location.host + "/ws/chat/" + window.chatRoomName + "/"
+        "ws://" + window.location.host + "/ws/chat/order/" + window.chatRoomName + "/"
       );
 
       document.getElementById("priceModal").addEventListener("submit", function (event) {

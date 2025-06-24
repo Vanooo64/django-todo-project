@@ -24,6 +24,8 @@ class Message(models.Model):
     chat = models.ForeignKey(Chat, on_delete=models.CASCADE, related_name='messages')
     sender = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     text = models.TextField(blank=True)
+    comment = models.TextField(blank=True, null=True) 
+    price = models.DecimalField(max_digits=10, decimal_places=2, null=True)
     file = models.FileField(upload_to='chat_files/', blank=True, null=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     is_read = models.BooleanField(default=False)
