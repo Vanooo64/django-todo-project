@@ -86,11 +86,11 @@ class ChatConsumer(AsyncWebsocketConsumer):
             self.room_group_name,
             {
                 'type': 'chat_message',
-                'message': saved_message.text if saved_message else message,
+                'message': message,
                 'sender': sender,
                 'timestamp': saved_message.timestamp.strftime('%Y-%m-%d %H:%M:%S'),
-                'comment': saved_message.comment if saved_message else comment,
-                'price': saved_message.price if saved_message else price    
+                'comment': comment or '',
+                'price': str(price) if price else ''
             }
         )
 
